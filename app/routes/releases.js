@@ -6,6 +6,12 @@ export default Ember.Route.extend({
 		return ajax({
 			url: 'https://api.github.com/repos/' + params.owner + '/' + params.repo + '/releases',
 			type: 'GET'
+		}).then(function(releases) { 
+			releases.forEach(function(release) { 
+				release.created_at = new Date(release.created_at); 
+				release.published_at = new Date(release.published_at);
+			});
+			return releases;
 		});
 	}
 });
