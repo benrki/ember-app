@@ -25,5 +25,23 @@ export default Ember.Route.extend({
 					return release;
 				});
 			});
+		},
+		afterModel: function(model, transition) {
+			var owner = transition.params.releases.owner,
+					repo = transition.params.releases.repo;
+			return ajax({
+				url: 'https://api.github.com/markdown',
+				type: 'POST',
+				contentType: 'application/x-www-form-urlencoded',
+				dataType: 'text',
+				data: JSON.stringify({
+					text: model.body,
+					mode: 'gfm',
+					context: owner + '/' + repo
+				})
+			}).then(function(text) {
+				model.body_html = text;
+				return model;
+			});
 		}
 });
