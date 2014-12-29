@@ -1,17 +1,11 @@
 import Ember from 'ember';
-require('ic-ajax').default({ 
-	url: 'https://api.github.com/repos/stefanpenner/ember-cli/releases', 
-	type: 'get' 
-})
-.then(function(response) { 
-	console.log("response:", response); 
-});
+import ajax from 'ic-ajax';
 
 export default Ember.Route.extend({
 	model: function(params) {
-		return ic.$.ajax({
+		return ajax({
 			url: 'https://api.github.com/repos/' + params.owner + '/' + params.repo + '/releases',
-			type: 'GET',
+			type: 'GET'
 		});
 	}
 });
